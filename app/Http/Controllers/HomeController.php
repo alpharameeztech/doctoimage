@@ -39,9 +39,8 @@ class HomeController extends Controller
         //working one
         //$results =  shell_exec(" libreoffice --headless --convert-to pdf /mnt/E/code/test/public/good.docx --outdir /mnt/E/code/test/public/");
 
-        $results =  shell_exec(" libreoffice --headless --convert-to pdf /mnt/E/code/test/public/good.docx --outdir /mnt/E/code/test/public/");
+        $result =  shell_exec("libreoffice --headless --convert-to pdf good.docx ");
 
-        $result = shell_exec('ls -la');
 //        $output = array();
 //        exec("libreoffice --headless --convert-to pdf --outdir  /mnt/E/code/test/public/good.pdf /mnt/E/code/test/public/good.docx", $output);
 //        print_r($output);
@@ -56,7 +55,7 @@ class HomeController extends Controller
 //
 //        echo $process->getOutput();
 
-       dd($result);
+       print_r($result);
     }
 
     /**
