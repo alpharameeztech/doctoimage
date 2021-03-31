@@ -36,10 +36,13 @@ class HomeController extends Controller
 
         $path = public_path() ;
 
+        echo "Converting doc to pdf...";
+
         //working one
         //$results =  shell_exec(" libreoffice --headless --convert-to pdf /mnt/E/code/test/public/good.docx --outdir /mnt/E/code/test/public/");
 
         $result =  shell_exec("libreoffice --headless --convert-to pdf good.docx ");
+
 
 //        $output = array();
 //        exec("libreoffice --headless --convert-to pdf --outdir  /mnt/E/code/test/public/good.pdf /mnt/E/code/test/public/good.docx", $output);
