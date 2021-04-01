@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Repositories\ProductRepository;
+use App\Repositories\DocToPdfRepository;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -11,7 +11,7 @@ class ProductController extends Controller
 
     protected $productRepository;
 
-    public function __construct(ProductRepository $productRepository)
+    public function __construct(DocToPdfRepository $productRepository)
     {
         $this->productRepository = $productRepository;
     }

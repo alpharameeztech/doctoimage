@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\ProductRepository;
+use App\Repositories\Interfaces\DocToPdfInterface;
 use Illuminate\Http\Request;
 use PDF;
 use PhpOffice\PhpWord\IOFactory;
@@ -11,10 +11,10 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class HomeController extends Controller
 {
-    protected $productRepository;
+    protected $docToPdf;
 
-    public function __construct(ProductRepository $productRepository){
-        $this->productRepository = $productRepository;
+    public function __construct(DocToPdfInterface $docToPdf){
+        $this->docToPdf = $docToPdf;
     }
     /**
      * Display a listing of the resource.
@@ -24,39 +24,9 @@ class HomeController extends Controller
     public function index()
     {
 
-//        $process = new Process(['python', 'python/index.py']);
-//        $process->run();
-//
-//// executes after the command finishes
-//        if (!$process->isSuccessful()) {
-//            throw new ProcessFailedException($process);
-//        }
-//
-//        echo $process->getOutput();
+        $file = 'good.docx';
 
-        $path = public_path() ;
-
-        echo "Converting doc to pdf...";
-
-        //working one
-        //$results =  shell_exec(" libreoffice --headless --convert-to pdf /mnt/E/code/test/public/good.docx --outdir /mnt/E/code/test/public/");
-
-        $result =  shell_exec("libreoffice --headless --convert-to pdf good.docx ");
-
-
-//        $output = array();
-//        exec("libreoffice --headless --convert-to pdf --outdir  /mnt/E/code/test/public/good.pdf /mnt/E/code/test/public/good.docx", $output);
-//        print_r($output);
-
-//        $process = new Process(['soffice --headless --convert-to pdf /mnt/E/code/test/public/good.docx --outdir /mnt/E/code/test/public/good.pdf']);
-//        $process->run();
-//
-//// executes after the command finishes
-//        if (!$process->isSuccessful()) {
-//            throw new ProcessFailedException($process);
-//        }
-//
-//        echo $process->getOutput();
+        $result = $this->docToPdf->execute($file);
 
        print_r($result);
     }
