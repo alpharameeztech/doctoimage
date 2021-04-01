@@ -38,6 +38,16 @@ class HomeController extends Controller
 
         print_r($result);
     }
+
+    public function convertPdfToImage(){
+//        $file = 'good.pdf';
+
+        $result = shell_exec("pdftoppm good.pdf good -jpeg");
+
+//        $result = $this->docToPdf->execute($file);
+
+        print_r($result);
+    }
     /**
      * Show the form for creating a new resource.
      *
