@@ -17,9 +17,7 @@ Route::get('/', 'App\Http\Controllers\HomeController@index')->name('home');
 Route::get('/products', 'App\Http\Controllers\ProductController@index')->name('products.index');
 Route::get('/product/{product}', 'App\Http\Controllers\ProductController@show')->name('product.show');
 Route::get('/cart', 'App\Http\Controllers\CartController@index')->name('cart.index');
-//Route::get('/api/convert/doc/to/pdf', function (){
-//
-//})->name('dock.to.pdf');
+Route::get('/api/test/convert/doc/to/pdf', 'App\Http\Controllers\HomeController@convertDocToPdf')->name('dock.to.pdf');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');

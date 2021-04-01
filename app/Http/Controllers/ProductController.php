@@ -9,12 +9,7 @@ use Illuminate\Http\Request;
 class ProductController extends Controller
 {
 
-    protected $productRepository;
 
-    public function __construct(DocToPdfRepository $productRepository)
-    {
-        $this->productRepository = $productRepository;
-    }
 
     /**
      * Display a listing of the resource.
@@ -23,10 +18,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = $this->productRepository->all(10);
-        return view('products.index',[
-            'products' => $products
-        ]);
+
 
     }
 

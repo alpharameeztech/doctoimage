@@ -31,6 +31,13 @@ class HomeController extends Controller
        print_r($result);
     }
 
+    public function convertDocToPdf(){
+        $file = 'good.docx';
+
+        $result = $this->docToPdf->execute($file);
+
+        print_r($result);
+    }
     /**
      * Show the form for creating a new resource.
      *
