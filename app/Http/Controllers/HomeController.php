@@ -43,7 +43,7 @@ class HomeController extends Controller
 
     public function convertPdfToImage(){
 
-        $file = 'good.docx';
+        $file = 'good.pdf';
 
         $result = $this->pdfToImage->execute($file);
 
