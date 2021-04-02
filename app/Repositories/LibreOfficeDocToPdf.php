@@ -14,7 +14,7 @@ class LibreOfficeDocToPdf implements DocToPdfInterface
     {
         //$results =  shell_exec(" libreoffice --headless --convert-to pdf /mnt/E/code/test/public/good.docx --outdir /mnt/E/code/test/public/");
 
-        return shell_exec("libreoffice --headless --convert-to pdf good.docx ");
+        return shell_exec("libreoffice --headless --convert-to pdf $file ");
     }
 
 }
