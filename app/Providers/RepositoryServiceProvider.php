@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Repositories\Interfaces\DocToPdfInterface;
+use App\Repositories\Interfaces\PdfToImageInterface;
 use App\Repositories\LibreOfficeDocToPdf;
+use App\Repositories\Pdftoppm;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -18,6 +20,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             DocToPdfInterface::class,
             LibreOfficeDocToPdf::class
+        );
+
+        $this->app->bind(
+            PdfToImageInterface::class,
+            Pdftoppm::class
         );
     }
 

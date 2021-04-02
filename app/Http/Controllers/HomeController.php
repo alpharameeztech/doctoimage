@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\Interfaces\DocToPdfInterface;
+use App\Repositories\Interfaces\PdfToImageInterface;
 use Illuminate\Http\Request;
 use PDF;
 use PhpOffice\PhpWord\IOFactory;
@@ -12,9 +13,14 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 class HomeController extends Controller
 {
     protected $docToPdf;
+    protected $pdfToImage;
 
-    public function __construct(DocToPdfInterface $docToPdf){
+    public function __construct(
+        DocToPdfInterface $docToPdf,
+        PdfToImageInterface $pdfToImage
+    ){
         $this->docToPdf = $docToPdf;
+        $this->pdfToImage = $pdfToImage;
     }
     /**
      * Display a listing of the resource.
@@ -36,11 +42,10 @@ class HomeController extends Controller
     }
 
     public function convertPdfToImage(){
-//        $file = 'good.pdf';
 
-        $result = shell_exec("pdftoppm good.pdf good -jpeg");
+        $file = 'good.docx';
 
-//        $result = $this->docToPdf->execute($file);
+        $result = $this->pdfToImage->execute($file);
 
         print_r($result);
     }
