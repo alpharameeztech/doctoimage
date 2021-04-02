@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Repositories\Interfaces\DocToPdfInterface;
 use App\Repositories\Interfaces\PdfToImageInterface;
+use App\Repositories\Interfaces\ZipFilesInterface;
 use App\Repositories\LibreOfficeDocToPdf;
 use App\Repositories\Pdftoppm;
+use App\Repositories\Zip;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -25,6 +27,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             PdfToImageInterface::class,
             Pdftoppm::class
+        );
+
+        $this->app->bind(
+            ZipFilesInterface::class,
+            Zip::class
         );
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Repositories\Interfaces\DocToPdfInterface;
 use App\Repositories\Interfaces\PdfToImageInterface;
+use App\Repositories\Interfaces\ZipFilesInterface;
 use Illuminate\Http\Request;
 use PDF;
 use PhpOffice\PhpWord\IOFactory;
@@ -14,13 +15,16 @@ class HomeController extends Controller
 {
     protected $docToPdf;
     protected $pdfToImage;
+    protected $zip;
 
     public function __construct(
         DocToPdfInterface $docToPdf,
-        PdfToImageInterface $pdfToImage
+        PdfToImageInterface $pdfToImage,
+        ZipFilesInterface $zip
     ){
         $this->docToPdf = $docToPdf;
         $this->pdfToImage = $pdfToImage;
+        $this->zip = $zip;
     }
     /**
      * Display a listing of the resource.
@@ -29,7 +33,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-
 
     }
 
@@ -47,6 +50,12 @@ class HomeController extends Controller
 
         $result = $this->pdfToImage->execute($file);
 
+        print_r($result);
+    }
+
+    public function zipFiles(){
+        $files = "*"; //default path = public
+        $result = $this->zip->execute($files);
         print_r($result);
     }
     /**
