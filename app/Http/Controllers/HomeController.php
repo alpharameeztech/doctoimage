@@ -24,11 +24,7 @@ class HomeController extends Controller
     public function index()
     {
 
-        $file = 'good.docx';
 
-        $result = $this->docToPdf->execute($file);
-
-       print_r($result);
     }
 
     public function convertDocToPdf(){
