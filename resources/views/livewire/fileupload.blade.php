@@ -19,8 +19,6 @@
                 <input  class="hidden" type="file" wire:model="files" multiple>
             </label>
 
-        @error('files.*') <span class="error">{{ $error }}</span> @enderror
-
             <div class="m-6 space-y-3 w-72">
                 <button
                     wire:loading.remove
@@ -29,10 +27,13 @@
                     {{ $text }}
                 </button>
 
+                @error('files.*') <span class="text-white error">{{ $message }}</span> @enderror
+
                 <div wire:loading>
                     <p class="text-white">
                         Processing...
                     </p>
+
                 </div>
             </div>
     </form>
