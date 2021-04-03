@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Repositories\Interfaces\DocToPdfInterface;
 use App\Repositories\Interfaces\PdfToImageInterface;
 use App\Repositories\Interfaces\ZipFilesInterface;
+use App\Services\Helper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use PDF;
 use PhpOffice\PhpWord\IOFactory;
 use Symfony\Component\Process\Process;
@@ -33,6 +35,9 @@ class HomeController extends Controller
      */
     public function index()
     {
+
+        //$directoryName = Helper::createUniqueDir();
+
         return view('home');
     }
 
