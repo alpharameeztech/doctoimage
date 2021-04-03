@@ -15,6 +15,9 @@
 
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}" defer></script>
+
+    @livewireStyles
+
 </head>
 <body>
 <div class="font-sans text-gray-900 antialiased">
@@ -25,5 +28,7 @@
         @yield('content')
     </div>
 </div>
+@livewireScripts
+
 </body>
 </html>
