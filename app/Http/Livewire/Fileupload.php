@@ -22,6 +22,8 @@ class Fileupload extends Component
         foreach ($this->files as $file) {
             $file->store('photos');
         }
+
+        $this->files = [];
     }
     public function render()
     {

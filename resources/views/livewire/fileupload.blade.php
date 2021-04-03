@@ -21,7 +21,13 @@
 
         @error('files.*') <span class="error">{{ $message }}</span> @enderror
 
-        <button type="submit">Save Photo</button>
+            <div class="m-6 space-y-3 w-72">
+                <button
+                    type="submit"
+                    class="block w-full px-6 py-2 text-xs font-medium leading-6 text-center text-white uppercase transition bg-blue-700 rounded shadow ripple hover:shadow-lg hover:bg-blue-800 focus:outline-none waves-effect">
+                    Convert
+                </button>
+            </div>
     </form>
 
 </div>
