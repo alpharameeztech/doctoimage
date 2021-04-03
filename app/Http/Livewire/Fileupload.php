@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Services\Helper;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -21,8 +22,11 @@ class Fileupload extends Component
             'files.*' => 'image|max:1024', // 1MB Max
         ]);
 
+        //unique name for the directory to store files
+        $directoryName = Helper::uniqueName();
+
         foreach ($this->files as $file) {
-            $file->store('photos');
+            $file->storePublicly("$directoryName");
         }
 
         $this->resetData();

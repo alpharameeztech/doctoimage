@@ -8,11 +8,9 @@ use Illuminate\Support\Str;
 class Helper
 {
 
-    public static function createUniqueDir(): ?string
+    public static function uniqueName(): ?string
     {
-        $name = (string)Str::uuid();
-        shell_exec("mkdir $name");
-        return $name;
+        return (string)Str::uuid();
     }
 
 }
