@@ -19,14 +19,21 @@
                 <input  class="hidden" type="file" wire:model="files" multiple>
             </label>
 
-        @error('files.*') <span class="error">{{ $message }}</span> @enderror
+        @error('files.*') <span class="error">{{ $error }}</span> @enderror
 
             <div class="m-6 space-y-3 w-72">
                 <button
+                    wire:loading.remove
                     type="submit"
                     class="block w-full px-6 py-2 text-xs font-medium leading-6 text-center text-white uppercase transition bg-blue-700 rounded shadow ripple hover:shadow-lg hover:bg-blue-800 focus:outline-none waves-effect">
-                    Convert
+                    {{ $text }}
                 </button>
+
+                <div wire:loading>
+                    <p class="text-white">
+                        Processing...
+                    </p>
+                </div>
             </div>
     </form>
 

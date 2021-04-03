@@ -11,7 +11,9 @@ class Fileupload extends Component
 
     public $files = [];
 
-    public $message = "message";
+    public $error = "";
+
+    public $text = "Convert";
 
     public function save()
     {
@@ -23,8 +25,14 @@ class Fileupload extends Component
             $file->store('photos');
         }
 
+        $this->resetData();
+    }
+
+    public function resetData()
+    {
         $this->files = [];
     }
+
     public function render()
     {
         return view('livewire.fileupload');
