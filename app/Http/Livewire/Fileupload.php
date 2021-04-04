@@ -19,7 +19,7 @@ class Fileupload extends Component
     public function save()
     {
         $this->validate([
-            'files.*' => 'image|max:1024', // 1MB Max
+            'files.*' => 'file|max:1024', // 1MB Max
         ]);
 
         //unique name for the directory to store files
@@ -28,6 +28,8 @@ class Fileupload extends Component
         foreach ($this->files as $file) {
             $file->storePublicly("$directoryName");
         }
+
+        session()->flash('success', 'Converted Successfully!');
 
         $this->resetData();
     }
