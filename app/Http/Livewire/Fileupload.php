@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Services\Helper;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -29,6 +30,8 @@ class Fileupload extends Component
             $file->storePublicly("$directoryName");
         }
 
+        $this->convertFilesToPdf($directoryName);
+
         session()->flash('success', 'Converted Successfully!');
 
         $this->resetData();
@@ -42,5 +45,16 @@ class Fileupload extends Component
     public function render()
     {
         return view('livewire.fileupload');
+    }
+
+    protected function convertFilesToPdf($uploadedPath){
+        $path = $uploadedPath . "/*";
+
+        $file =  Storage::path("$path");
+        $output = Storage::path("$uploadedPath/pdf");
+
+        $result = shell_exec("libreoffice --headless --convert-to pdf $file --outdir $output");
+
+        return $result;
     }
 }

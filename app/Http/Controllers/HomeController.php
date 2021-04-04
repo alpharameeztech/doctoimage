@@ -7,6 +7,7 @@ use App\Repositories\Interfaces\PdfToImageInterface;
 use App\Repositories\Interfaces\ZipFilesInterface;
 use App\Services\Helper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use PDF;
 use PhpOffice\PhpWord\IOFactory;
