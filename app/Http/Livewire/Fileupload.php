@@ -55,6 +55,19 @@ class Fileupload extends Component
 
         $result = shell_exec("libreoffice --headless --convert-to pdf $file --outdir $output");
 
+        $this->convertFilesToImage($uploadedPath);
+
+        return $result;
+    }
+
+    protected function convertFilesToImage($uploadedPath){
+        $path = $uploadedPath ;
+
+        $file =  Storage::path("$path");
+        $output = Storage::path("$uploadedPath") . '/pdf';
+
+        $result = shell_exec("cd $output && find . -maxdepth 1 -type f -name '*.pdf' -exec pdftoppm -jpeg {} {} \;");
+        $result = shell_exec("cd $output && mkdir images && mv *.jpg images/");
         return $result;
     }
 }
