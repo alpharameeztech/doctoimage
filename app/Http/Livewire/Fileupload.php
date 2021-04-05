@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Repositories\Interfaces\DocToPdfInterface;
+use App\Repositories\Interfaces\PdfToImageInterface;
 use App\Services\Helper;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -27,7 +28,7 @@ class Fileupload extends Component
 //    public function mount(DocToPdfInterface $docToPdf){
 //        $this->docToPdf = $docToPdf;
 //    }
-    public function save(DocToPdfInterface $docToPdf)
+    public function save(DocToPdfInterface $docToPdf,  PdfToImageInterface $pdfToImage)
     {
         $this->validate([
             'files.*' => 'file|max:1024', // 1MB Max
@@ -40,7 +41,7 @@ class Fileupload extends Component
             $file->storePublicly("$directoryName");
         }
 
-        $this->convertFilesToPdf($docToPdf,$directoryName);
+        $this->convertFilesToPdf($docToPdf, $pdfToImage,$directoryName);
 
         session()->flash('success', 'Converted Successfully!');
 
@@ -57,30 +58,30 @@ class Fileupload extends Component
         return view('livewire.fileupload');
     }
 
-    public function convertFilesToPdf($docToPdf,$uploadedPath){
+    public function convertFilesToPdf($docToPdf,$pdfToImage,$uploadedPath){
         $path = $uploadedPath . "/*";
 
         $file =  Storage::path("$path");
         $output = Storage::path("$uploadedPath/$this->folderNameHoldingPdfFiles");
 
-      //  $result = shell_exec("libreoffice --headless --convert-to pdf $file --outdir $output");
-
+        //interface method
         $docToPdf->convertFiles($file, $output);
-        $this->convertFilesToImage($uploadedPath);
+
+        $this->convertFilesToImage($pdfToImage,$uploadedPath);
 
        // return $result;
     }
 
-    protected function convertFilesToImage($uploadedPath){
+    protected function convertFilesToImage($pdfToImage,$uploadedPath){
         $path = $uploadedPath ;
 
         $file =  Storage::path("$path");
         $output = Storage::path("$uploadedPath") . "/$this->folderNameHoldingPdfFiles";
 
-        $result = shell_exec("cd $output && find . -maxdepth 1 -type f -name '*.pdf' -exec pdftoppm -jpeg {} {} \;");
-        $result = shell_exec("cd $output && mkdir $this->folderNameToHoldImages && mv *.jpg $this->folderNameToHoldImages/");
+        //interface method
+        $result = $pdfToImage->convertFiles($output,$this->folderNameToHoldImages);
 
-        $imagesPath = $uploadedPath . "/$this->folderNameHoldingPdfFiles/$this->folderNameToHoldImages";
+        //$imagesPath = $uploadedPath . "/$this->folderNameHoldingPdfFiles/$this->folderNameToHoldImages";
         //zip files
         $this->zipFiles($uploadedPath);
         return $result;
