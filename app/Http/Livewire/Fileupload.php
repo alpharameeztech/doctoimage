@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Repositories\Interfaces\DocToPdfInterface;
 use App\Services\Helper;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -21,7 +22,12 @@ class Fileupload extends Component
 
     public $folderNameToHoldImages = 'images';
 
-    public function save()
+    protected $docToPdf;
+
+//    public function mount(DocToPdfInterface $docToPdf){
+//        $this->docToPdf = $docToPdf;
+//    }
+    public function save(DocToPdfInterface $docToPdf)
     {
         $this->validate([
             'files.*' => 'file|max:1024', // 1MB Max
@@ -34,7 +40,7 @@ class Fileupload extends Component
             $file->storePublicly("$directoryName");
         }
 
-        $this->convertFilesToPdf($directoryName);
+        $this->convertFilesToPdf($docToPdf,$directoryName);
 
         session()->flash('success', 'Converted Successfully!');
 
@@ -51,17 +57,18 @@ class Fileupload extends Component
         return view('livewire.fileupload');
     }
 
-    protected function convertFilesToPdf($uploadedPath){
+    public function convertFilesToPdf($docToPdf,$uploadedPath){
         $path = $uploadedPath . "/*";
 
         $file =  Storage::path("$path");
         $output = Storage::path("$uploadedPath/$this->folderNameHoldingPdfFiles");
 
-        $result = shell_exec("libreoffice --headless --convert-to pdf $file --outdir $output");
+      //  $result = shell_exec("libreoffice --headless --convert-to pdf $file --outdir $output");
 
+        $docToPdf->convertFiles($file, $output);
         $this->convertFilesToImage($uploadedPath);
 
-        return $result;
+       // return $result;
     }
 
     protected function convertFilesToImage($uploadedPath){
