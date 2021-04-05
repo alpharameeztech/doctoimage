@@ -75,8 +75,16 @@ class Fileupload extends Component
         return $result;
     }
 
-    protected function zipFiles($uploadedPath){
-        $path = Storage::path($uploadedPath) . '/pdf/images';
-        return shell_exec("cd $path && zip converted.zip *");
+    protected function zipFiles($folderName){
+        $public = public_path();
+        \Log::info($public);
+        shell_exec("cd $public && mkdir converted");
+        $public = public_path() . '/converted';
+
+        $zipFileName = $folderName;
+        $path = Storage::path($folderName) . '/pdf/images';
+        //after zipping the files
+        //move the folder to the public directory
+        return shell_exec("cd $path && zip $folderName.zip * && mv $folderName.zip $public");
     }
 }
