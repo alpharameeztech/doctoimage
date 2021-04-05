@@ -17,6 +17,8 @@ class Fileupload extends Component
 
     public $text = "Convert";
 
+    public $folderNameHoldingPdfFiles = 'pdf';
+
     public function save()
     {
         $this->validate([
@@ -51,7 +53,7 @@ class Fileupload extends Component
         $path = $uploadedPath . "/*";
 
         $file =  Storage::path("$path");
-        $output = Storage::path("$uploadedPath/pdf");
+        $output = Storage::path("$uploadedPath/$this->folderNameHoldingPdfFiles");
 
         $result = shell_exec("libreoffice --headless --convert-to pdf $file --outdir $output");
 
@@ -64,12 +66,12 @@ class Fileupload extends Component
         $path = $uploadedPath ;
 
         $file =  Storage::path("$path");
-        $output = Storage::path("$uploadedPath") . '/pdf';
+        $output = Storage::path("$uploadedPath") . "/$this->folderNameHoldingPdfFiles";
 
         $result = shell_exec("cd $output && find . -maxdepth 1 -type f -name '*.pdf' -exec pdftoppm -jpeg {} {} \;");
         $result = shell_exec("cd $output && mkdir images && mv *.jpg images/");
 
-        $imagesPath = $uploadedPath . "/pdf/images";
+        $imagesPath = $uploadedPath . "/$this->folderNameHoldingPdfFiles/images";
         //zip files
         $this->zipFiles($uploadedPath);
         return $result;
@@ -82,7 +84,7 @@ class Fileupload extends Component
         $public = public_path() . '/converted';
 
         $zipFileName = $folderName;
-        $path = Storage::path($folderName) . '/pdf/images';
+        $path = Storage::path($folderName) . "/$this->folderNameHoldingPdfFiles/images";
         //after zipping the files
         //move the folder to the public directory
         return shell_exec("cd $path && zip $folderName.zip * && mv $folderName.zip $public");
