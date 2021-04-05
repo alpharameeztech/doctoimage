@@ -19,6 +19,8 @@ class Fileupload extends Component
 
     public $folderNameHoldingPdfFiles = 'pdf';
 
+    public $folderNameToHoldImages = 'images';
+
     public function save()
     {
         $this->validate([
@@ -69,9 +71,9 @@ class Fileupload extends Component
         $output = Storage::path("$uploadedPath") . "/$this->folderNameHoldingPdfFiles";
 
         $result = shell_exec("cd $output && find . -maxdepth 1 -type f -name '*.pdf' -exec pdftoppm -jpeg {} {} \;");
-        $result = shell_exec("cd $output && mkdir images && mv *.jpg images/");
+        $result = shell_exec("cd $output && mkdir $this->folderNameToHoldImages && mv *.jpg $this->folderNameToHoldImages/");
 
-        $imagesPath = $uploadedPath . "/$this->folderNameHoldingPdfFiles/images";
+        $imagesPath = $uploadedPath . "/$this->folderNameHoldingPdfFiles/$this->folderNameToHoldImages";
         //zip files
         $this->zipFiles($uploadedPath);
         return $result;
@@ -84,7 +86,7 @@ class Fileupload extends Component
         $public = public_path() . '/converted';
 
         $zipFileName = $folderName;
-        $path = Storage::path($folderName) . "/$this->folderNameHoldingPdfFiles/images";
+        $path = Storage::path($folderName) . "/$this->folderNameHoldingPdfFiles/$this->folderNameToHoldImages";
         //after zipping the files
         //move the folder to the public directory
         return shell_exec("cd $path && zip $folderName.zip * && mv $folderName.zip $public");
