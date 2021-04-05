@@ -25,9 +25,6 @@ class Fileupload extends Component
 
     protected $docToPdf;
 
-//    public function mount(DocToPdfInterface $docToPdf){
-//        $this->docToPdf = $docToPdf;
-//    }
     public function save(DocToPdfInterface $docToPdf,  PdfToImageInterface $pdfToImage)
     {
         $this->validate([
@@ -81,7 +78,6 @@ class Fileupload extends Component
         //interface method
         $result = $pdfToImage->convertFiles($output,$this->folderNameToHoldImages);
 
-        //$imagesPath = $uploadedPath . "/$this->folderNameHoldingPdfFiles/$this->folderNameToHoldImages";
         //zip files
         $this->zipFiles($uploadedPath);
         return $result;
@@ -89,7 +85,6 @@ class Fileupload extends Component
 
     protected function zipFiles($folderName){
         $public = public_path();
-        \Log::info($public);
         shell_exec("cd $public && mkdir converted");
         $public = public_path() . '/converted';
 
