@@ -68,6 +68,15 @@ class Fileupload extends Component
 
         $result = shell_exec("cd $output && find . -maxdepth 1 -type f -name '*.pdf' -exec pdftoppm -jpeg {} {} \;");
         $result = shell_exec("cd $output && mkdir images && mv *.jpg images/");
+
+        $imagesPath = $uploadedPath . "/pdf/images";
+        //zip files
+        $this->zipFiles($uploadedPath);
         return $result;
+    }
+
+    protected function zipFiles($uploadedPath){
+        $path = Storage::path($uploadedPath) . '/pdf/images';
+        return shell_exec("cd $path && zip converted.zip *");
     }
 }
