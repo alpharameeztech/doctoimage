@@ -20,6 +20,8 @@ class Fileupload extends Component
 
     public $text = "Convert";
 
+    public $folderName = '';
+
     public $folderNameHoldingPdfFiles = 'pdf';
 
     public $folderNameToHoldImages = 'images';
@@ -36,6 +38,8 @@ class Fileupload extends Component
 
         //unique name for the directory to store files
         $directoryName = Helper::uniqueName();
+
+        $this->folderName = $directoryName;
 
         foreach ($this->files as $file) {
             $file->storePublicly("$directoryName");
@@ -100,8 +104,7 @@ class Fileupload extends Component
     public function download()
     {
         $path = public_path();
-        $path = $path . '/converted/02c05a6b-ac79-436b-90f5-9aff68753df5.zip';
-        \Log::info($path);
+        $path = $path . "/converted/$this->folderName.zip";
         return response()->download($path);
     }
 }
