@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Repositories\Interfaces\DocToPdfInterface;
 use App\Repositories\Interfaces\PdfToImageInterface;
+use App\Repositories\Interfaces\ZipFilesInterface;
 use App\Services\Helper;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -25,7 +26,7 @@ class Fileupload extends Component
 
     protected $docToPdf;
 
-    public function save(DocToPdfInterface $docToPdf,  PdfToImageInterface $pdfToImage)
+    public function save(DocToPdfInterface $docToPdf,  PdfToImageInterface $pdfToImage, ZipFilesInterface $zip)
     {
         $this->validate([
             'files.*' => 'file|max:1024', // 1MB Max
@@ -38,7 +39,7 @@ class Fileupload extends Component
             $file->storePublicly("$directoryName");
         }
 
-        $this->convertFilesToPdf($docToPdf, $pdfToImage,$directoryName);
+        $this->convertFilesToPdf($docToPdf, $pdfToImage,$directoryName,$zip);
 
         session()->flash('success', 'Converted Successfully!');
 
@@ -55,7 +56,7 @@ class Fileupload extends Component
         return view('livewire.fileupload');
     }
 
-    public function convertFilesToPdf($docToPdf,$pdfToImage,$uploadedPath){
+    public function convertFilesToPdf($docToPdf,$pdfToImage,$uploadedPath,$zip){
         $path = $uploadedPath . "/*";
 
         $file =  Storage::path("$path");
@@ -64,12 +65,12 @@ class Fileupload extends Component
         //interface method
         $docToPdf->convertFiles($file, $output);
 
-        $this->convertFilesToImage($pdfToImage,$uploadedPath);
+        $this->convertFilesToImage($pdfToImage,$uploadedPath, $zip);
 
        // return $result;
     }
 
-    protected function convertFilesToImage($pdfToImage,$uploadedPath){
+    protected function convertFilesToImage($pdfToImage,$uploadedPath, $zip){
         $path = $uploadedPath ;
 
         $file =  Storage::path("$path");
@@ -79,19 +80,15 @@ class Fileupload extends Component
         $result = $pdfToImage->convertFiles($output,$this->folderNameToHoldImages);
 
         //zip files
-        $this->zipFiles($uploadedPath);
+        $this->zipFiles($uploadedPath, $zip);
+
         return $result;
     }
 
-    protected function zipFiles($folderName){
-        $public = public_path();
-        shell_exec("cd $public && mkdir converted");
-        $public = public_path() . '/converted';
+    protected function zipFiles($folderName, $zip){
 
-        $zipFileName = $folderName;
         $path = Storage::path($folderName) . "/$this->folderNameHoldingPdfFiles/$this->folderNameToHoldImages";
-        //after zipping the files
-        //move the folder to the public directory
-        return shell_exec("cd $path && zip $folderName.zip * && mv $folderName.zip $public");
+
+        $zip->execute($folderName,$path);
     }
 }

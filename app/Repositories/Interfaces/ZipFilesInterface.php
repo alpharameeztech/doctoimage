@@ -6,5 +6,5 @@ use App\Models\Product;
 
 interface ZipFilesInterface
 {
-    public function execute($files);
+    public function execute($fileName='default', $filesPath);
 }
