@@ -103,8 +103,7 @@ class Fileupload extends Component
 
     public function download()
     {
-        $path = public_path();
-        $path = $path . "/converted/$this->folderName.zip";
+        $path = storage_path() . '/app/' . $this->folderName . '/'. $this->folderName . '.zip';
         return response()->download($path);
     }
 }
