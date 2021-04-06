@@ -24,6 +24,8 @@ class Fileupload extends Component
 
     public $folderNameToHoldImages = 'images';
 
+    public $downloadLink = '';
+
     protected $docToPdf;
 
     public function save(DocToPdfInterface $docToPdf,  PdfToImageInterface $pdfToImage, ZipFilesInterface $zip)
@@ -90,5 +92,16 @@ class Fileupload extends Component
         $path = Storage::path($folderName) . "/$this->folderNameHoldingPdfFiles/$this->folderNameToHoldImages";
 
         $zip->execute($folderName,$path);
+
+        $publicPath = public_path();
+
+    }
+
+    public function download()
+    {
+        $path = public_path();
+        $path = $path . '/converted/02c05a6b-ac79-436b-90f5-9aff68753df5.zip';
+        \Log::info($path);
+        return response()->download($path);
     }
 }

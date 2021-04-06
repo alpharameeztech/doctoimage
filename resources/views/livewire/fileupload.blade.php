@@ -39,7 +39,11 @@
                 <button
                     wire:loading.remove
                     type="submit"
-                    class="block w-full px-6 py-2 text-xs font-medium leading-6 text-center text-white uppercase transition bg-blue-700 rounded shadow ripple hover:shadow-lg hover:bg-blue-800 focus:outline-none waves-effect">
+                    class="block w-full px-6 py-2 text-xs font-medium
+                     leading-6 text-center text-white uppercase transition
+                      bg-blue-700 rounded shadow ripple hover:shadow-lg
+                       hover:bg-blue-800 focus:outline-none waves-effect"
+                >
                     {{ $text }}
                 </button>
 
@@ -51,6 +55,16 @@
                     </p>
 
                 </div>
+
+                <button class="block w-full px-6 py-2
+                text-xs font-medium leading-6 text-center
+                 text-white uppercase transition bg-blue-700
+                  rounded shadow ripple hover:shadow-lg hover:bg-blue-800
+                   focus:outline-none waves-effect" wire:click="download"
+                >
+                    Download File
+                </button>
+
             </div>
     </form>
 
