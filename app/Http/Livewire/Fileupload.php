@@ -22,14 +22,19 @@ class Fileupload extends Component
 
     public $folderName = '';
 
-    public $folderNameHoldingPdfFiles = 'pdf';
+    public $folderNameHoldingPdfFiles = '';
 
-    public $folderNameToHoldImages = 'images';
+    public $folderNameToHoldImages = '';
 
     public $downloadLink = '';
     public $zipName = '';
 
     protected $docToPdf;
+
+    public function mount(){
+        $this->folderNameHoldingPdfFiles = Helper::$folderNameHoldingPdfFiles;
+        $this->folderNameToHoldImages = Helper::$folderNameToHoldImages;
+    }
 
     public function save(DocToPdfInterface $docToPdf,  PdfToImageInterface $pdfToImage, ZipFilesInterface $zip)
     {
