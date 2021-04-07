@@ -105,6 +105,9 @@ class Fileupload extends Component
 
         $publicPath = public_path();
 
+        //these are files that just uplaoded
+        //for the conversion
+        //$this->removeUploadedFiles();
     }
 
     public function download()
@@ -113,5 +116,10 @@ class Fileupload extends Component
 
         return response()->download($path)->deleteFileAfterSend(true);
 
+    }
+
+    protected function removeUploadedFiles(){
+        $path = Storage::path($this->folderName);
+        Helper::deleteDiretory($path);
     }
 }

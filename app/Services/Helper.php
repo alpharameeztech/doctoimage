@@ -13,4 +13,8 @@ class Helper
         return (string)Str::uuid();
     }
 
+    public static function deleteDiretory($name){
+        return shell_exec("rm -R $name");
+    }
+
 }
