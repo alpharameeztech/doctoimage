@@ -27,6 +27,7 @@ class Fileupload extends Component
     public $folderNameToHoldImages = 'images';
 
     public $downloadLink = '';
+    public $zipName = '';
 
     protected $docToPdf;
 
@@ -39,13 +40,15 @@ class Fileupload extends Component
         //unique name for the directory to store files
         $directoryName = Helper::uniqueName();
 
-        $this->folderName = $directoryName;
+        $this->zipName = $directoryName;
+
+        $this->folderName = 'uploaded/'. $directoryName;
 
         foreach ($this->files as $file) {
-            $file->storePublicly("$directoryName");
+            $file->storePublicly( $this->folderName);
         }
 
-        $this->convertFilesToPdf($docToPdf, $pdfToImage,$directoryName,$zip);
+        $this->convertFilesToPdf($docToPdf, $pdfToImage, $this->folderName,$zip);
 
         session()->flash('success', 'Converted Successfully!');
 
@@ -85,6 +88,7 @@ class Fileupload extends Component
         //interface method
         $result = $pdfToImage->convertFiles($output,$this->folderNameToHoldImages);
 
+        \Log::info('zip:'. $uploadedPath);
         //zip files
         $this->zipFiles($uploadedPath, $zip);
 
@@ -95,7 +99,9 @@ class Fileupload extends Component
 
         $path = Storage::path($folderName) . "/$this->folderNameHoldingPdfFiles/$this->folderNameToHoldImages";
 
-        $zip->execute($folderName,$path);
+        $destination = storage_path();
+
+        $zip->execute($this->zipName, $path, $destination);
 
         $publicPath = public_path();
 
@@ -103,7 +109,9 @@ class Fileupload extends Component
 
     public function download()
     {
-        $path = storage_path() . '/app/' . $this->folderName . '/'. $this->folderName . '.zip';
-        return response()->download($path);
+        $path = storage_path()  . '/' . $this->zipName . '.zip';
+
+        return response()->download($path)->deleteFileAfterSend(true);
+
     }
 }

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 class Zip implements ZipFilesInterface
 {
 
-    public function execute($fileName, $filesPath)
+    public function execute($name,$source,$destination)
     {
         // upload zip file to the public folder
 //        $public = public_path();
@@ -23,10 +23,9 @@ class Zip implements ZipFilesInterface
 
        //save the files on the same storage folder directory
 
-        $path = Storage::path($fileName) . '/pdf/images';
-        $pathOfZip = Storage::path($fileName);
+
         //after zipping the files
-        return shell_exec("cd $path && zip $fileName.zip * && mv $fileName.zip $pathOfZip");
+        return shell_exec("cd $source && zip $name.zip * && mv $name.zip $destination");
     }
 
 }
