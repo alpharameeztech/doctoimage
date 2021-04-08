@@ -29,11 +29,14 @@ class Fileupload extends Component
     public $downloadLink = '';
     public $zipName = '';
 
+    public $maxFilesAllowed;
+
     protected $docToPdf;
 
     public function mount(){
         $this->folderNameHoldingPdfFiles = Helper::$folderNameHoldingPdfFiles;
         $this->folderNameToHoldImages = Helper::$folderNameToHoldImages;
+        $this->maxFilesAllowed = config('app.max_files_allowed');
     }
 
     public function save(DocToPdfInterface $docToPdf,  PdfToImageInterface $pdfToImage, ZipFilesInterface $zip)
@@ -42,22 +45,33 @@ class Fileupload extends Component
             'files.*' => "file",
         ]);
 
-        //unique name for the directory to store files
-        $directoryName = Helper::uniqueName();
+        $maxFilesAllowed = $this->maxFilesAllowed;
+        $files = count($this->files);
+//        \Log::info($maxFilesAllowed);
+//        \Log::info($files);
+        $validationPassed = $this->validateFiles();
 
-        $this->zipName = $directoryName;
+        if($validationPassed){
 
-        $this->folderName = 'uploaded/'. $directoryName;
+            //unique name for the directory to store files
+            $directoryName = Helper::uniqueName();
 
-        foreach ($this->files as $file) {
-            $file->storePublicly( $this->folderName);
+            $this->zipName = $directoryName;
+
+            $this->folderName = 'uploaded/' . $directoryName;
+
+            foreach ($this->files as $file) {
+                $file->storePublicly($this->folderName);
+            }
+
+            $this->convertFilesToPdf($docToPdf, $pdfToImage, $this->folderName, $zip);
+
+            session()->flash('success', 'Converted Successfully!');
+
+            $this->resetData();
+        }else{
+            \Log::info('validation failed');
         }
-
-        $this->convertFilesToPdf($docToPdf, $pdfToImage, $this->folderName,$zip);
-
-        session()->flash('success', 'Converted Successfully!');
-
-        $this->resetData();
     }
 
     public function resetData()
@@ -126,5 +140,13 @@ class Fileupload extends Component
     protected function removeUploadedFiles(){
         $path = Storage::path($this->folderName);
         Helper::deleteDiretory($path);
+    }
+
+    protected function validateFiles(){
+        if(count($this->files)  <= $this->maxFilesAllowed ){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
