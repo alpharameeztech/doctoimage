@@ -45,10 +45,6 @@ class Fileupload extends Component
             'files.*' => "file",
         ]);
 
-        $maxFilesAllowed = $this->maxFilesAllowed;
-        $files = count($this->files);
-//        \Log::info($maxFilesAllowed);
-//        \Log::info($files);
         $validationPassed = $this->validateFiles();
 
         if($validationPassed){
