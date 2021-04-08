@@ -2,6 +2,7 @@
 
 return [
 
+    $MAX_FILE_SIZE_LIMIT = config('app.max_file_size_limit'),
     /*
     |--------------------------------------------------------------------------
     | Class Namespace
@@ -84,7 +85,7 @@ return [
     'temporary_file_upload' => [
         'disk' => null,        // Example: 'local', 's3'              Default: 'default'
 //        'rules' => 'null',       // Example: ['file', 'mimes:png,jpg']  Default: ['required', 'file', 'max:12288'] (12MB)
-        'rules' => 'required|file|mimes:doc,docx|max:1024',       // Example: ['file', 'mimes:png,jpg']  Default: ['required', 'file', 'max:12288'] (12MB)
+        'rules' => "required|file|mimes:doc,docx|max:$MAX_FILE_SIZE_LIMIT",       // Example: ['file', 'mimes:png,jpg']  Default: ['required', 'file', 'max:12288'] (12MB)
         'directory' => null,   // Example: 'tmp'                      Default  'livewire-tmp'
         'middleware' => null,  // Example: 'throttle:5,1'             Default: 'throttle:60,1'
         'preview_mimes' => [   // Supported file types for temporary pre-signed file URLs.

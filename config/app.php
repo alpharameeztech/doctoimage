@@ -234,4 +234,6 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
+    'max_file_size_limit' => env('MAX_FILE_SIZE_LIMIT', '5120'), // default is 5MB
+
 ];

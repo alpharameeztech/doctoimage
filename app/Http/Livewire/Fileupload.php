@@ -39,7 +39,7 @@ class Fileupload extends Component
     public function save(DocToPdfInterface $docToPdf,  PdfToImageInterface $pdfToImage, ZipFilesInterface $zip)
     {
         $this->validate([
-            'files.*' => 'file|max:1024', // 1MB Max
+            'files.*' => "file",
         ]);
 
         //unique name for the directory to store files
