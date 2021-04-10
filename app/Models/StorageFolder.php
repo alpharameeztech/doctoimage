@@ -9,9 +9,15 @@ class StorageFolder extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['id'];
+
     public function files()
     {
        return $this->hasMany(File::class);
     }
 
+    public function conversion(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Conversion::class);
+    }
 }

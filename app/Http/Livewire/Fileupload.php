@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Conversion;
 use App\Models\File;
 use App\Models\StorageFolder;
 use App\Repositories\Interfaces\DocToPdfInterface;
@@ -74,6 +75,12 @@ class Fileupload extends Component
                   'name' => $fileName
                 ]);
             }
+
+            //create a new conversion record
+            $storageFolder->conversion()->create([
+                'from_type' => 'doc',
+                'to_type' => 'jpg'
+            ]);
 
             $this->convertFilesToPdf($docToPdf, $pdfToImage, $this->folderName, $zip);
 
