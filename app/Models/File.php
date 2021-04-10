@@ -9,8 +9,10 @@ class File extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name'];
+
     public function storageFolder()
     {
-        $this->belongsTo(StorageFolder::class);
+       return $this->belongsTo(StorageFolder::class);
     }
 }

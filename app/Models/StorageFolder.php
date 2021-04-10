@@ -11,6 +11,7 @@ class StorageFolder extends Model
 
     public function files()
     {
-        $this->hasMany(File::class);
+       return $this->hasMany(File::class);
     }
+
 }

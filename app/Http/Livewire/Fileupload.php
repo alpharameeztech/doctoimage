@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\File;
+use App\Models\StorageFolder;
 use App\Repositories\Interfaces\DocToPdfInterface;
 use App\Repositories\Interfaces\PdfToImageInterface;
 use App\Repositories\Interfaces\ZipFilesInterface;
@@ -31,6 +33,8 @@ class Fileupload extends Component
 
     public $maxFilesAllowed;
 
+    public $storageFolder;
+
     protected $docToPdf;
 
     public function mount(){
@@ -56,8 +60,19 @@ class Fileupload extends Component
 
             $this->folderName = 'uploaded/' . $directoryName;
 
+            //create a storage folder record
+            $storageFolder = new StorageFolder;
+            $storageFolder->name = $directoryName;
+            $storageFolder->save();
+
             foreach ($this->files as $file) {
-                $file->storePublicly($this->folderName);
+                $fileName = $file->storePublicly($this->folderName);
+
+                //add the file record
+                //and attach it with the storage folder
+                $storageFolder->files()->create([
+                  'name' => $fileName
+                ]);
             }
 
             $this->convertFilesToPdf($docToPdf, $pdfToImage, $this->folderName, $zip);

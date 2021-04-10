@@ -16,7 +16,7 @@ class CreateFilesTable extends Migration
         Schema::create('files', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('storage_folder_id');
-            $table->uuid('name');
+            $table->longText('name');
             $table->string('convert_status')->default('in_progress');
             $table->timestamps();
 
