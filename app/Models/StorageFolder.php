@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class StorageFolder extends Model
 {
     use HasFactory;
+
+    public function files()
+    {
+        $this->hasMany(File::class);
+    }
 }
