@@ -9,6 +9,7 @@ use App\Repositories\Interfaces\DocToPdfInterface;
 use App\Repositories\Interfaces\PdfToImageInterface;
 use App\Repositories\Interfaces\ZipFilesInterface;
 use App\Services\Helper;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -35,6 +36,7 @@ class Fileupload extends Component
     public $maxFilesAllowed;
 
     public $storageFolder;
+    public $conversion;
 
     protected $docToPdf;
 
@@ -66,6 +68,8 @@ class Fileupload extends Component
             $storageFolder->name = $directoryName;
             $storageFolder->save();
 
+            $this->storageFolder = $storageFolder;
+
             foreach ($this->files as $file) {
                 $fileName = $file->storePublicly($this->folderName);
 
@@ -77,10 +81,12 @@ class Fileupload extends Component
             }
 
             //create a new conversion record
-            $storageFolder->conversion()->create([
+           $conversion =  $storageFolder->conversion()->create([
                 'from_type' => 'doc',
                 'to_type' => 'jpg'
             ]);
+
+            $this->conversion = Conversion::find($conversion->id);
 
             $this->convertFilesToPdf($docToPdf, $pdfToImage, $this->folderName, $zip);
 
@@ -125,7 +131,11 @@ class Fileupload extends Component
         //interface method
         $result = $pdfToImage->convertFiles($output,$this->folderNameToHoldImages);
 
-        \Log::info('zip:'. $uploadedPath);
+        //same the time when the files are converted
+        $this->conversion->converted_at = Carbon::now();
+        $this->conversion->status = "converted";
+        $this->conversion->save();
+
         //zip files
         $this->zipFiles($uploadedPath, $zip);
 
@@ -142,8 +152,15 @@ class Fileupload extends Component
 
         $publicPath = public_path();
 
-        //these are files that just uplaoded
+        //save the time when the zipping is done
+        $this->conversion->zipped_at = Carbon::now();
+        $this->conversion->save();
+
+
+        //these are files that just uploaded
         //for the conversion
+        //once they are converted and zipped
+        //these files should be removed
         //$this->removeUploadedFiles();
     }
 
@@ -151,7 +168,10 @@ class Fileupload extends Component
     {
         $path = storage_path()  . '/' . $this->zipName . '.zip';
 
-        return response()->download($path)->deleteFileAfterSend(true);
+        $this->conversion->downloaded_at = Carbon::now();
+        $this->conversion->save();
+
+        return response()->download($path);
 
     }
 
