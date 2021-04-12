@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Repositories\Interfaces\ZipFilesInterface;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -14,18 +15,19 @@ class ZipFiles implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $filename, $source, $destination;
+    protected $conversion, $filename, $source, $destination;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($fileName, $source, $destination)
+    public function __construct($conversion, $fileName, $source, $destination)
     {
         $this->filename = $fileName;
         $this->source = $source;
         $this->destination = $destination;
+        $this->conversion = $conversion;
     }
 
     /**
@@ -36,5 +38,9 @@ class ZipFiles implements ShouldQueue
     public function handle(ZipFilesInterface $zip)
     {
         $zip->execute($this->filename,$this->source,$this->destination);
+
+        //set the time when the zipping is done
+        $this->conversion->zipped_at = Carbon::now();
+        $this->conversion->save();
     }
 }

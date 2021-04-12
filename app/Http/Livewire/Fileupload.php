@@ -87,7 +87,7 @@ class Fileupload extends Component
            $conversion =  $storageFolder->conversion()->create([
                 'from_type' => 'doc',
                 'to_type' => 'jpg'
-            ]);
+           ]);
 
             $this->conversion = Conversion::find($conversion->id);
 
@@ -106,8 +106,8 @@ class Fileupload extends Component
             //to convert doc,docx to images
             Bus::chain([
                 new  DockToPdfConverter($this->folderName),
-                new PdfToImageConverter($sourceOfPdfs),
-                new ZipFiles($this->zipName, $zipSource, $destination)
+                new PdfToImageConverter($this->conversion, $sourceOfPdfs),
+                new ZipFiles($this->conversion,$this->zipName, $zipSource, $destination)
             ])->dispatch();
 
            // $this->convertFilesToPdf($docToPdf, $pdfToImage, $this->folderName, $zip);

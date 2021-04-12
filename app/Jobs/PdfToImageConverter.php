@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Repositories\Interfaces\PdfToImageInterface;
 use App\Services\Helper;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -17,14 +18,16 @@ class PdfToImageConverter implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $source;
+    protected $conversion;
     protected $folderNameToHoldImages;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($source)
+    public function __construct($conversion, $source)
     {
+        $this->conversion = $conversion;
         $this->source = $source;
         $this->folderNameToHoldImages = Helper::$folderNameToHoldImages;
     }
@@ -40,5 +43,9 @@ class PdfToImageConverter implements ShouldQueue
         //interface method
         $result = $pdfToImage->convertFiles($this->source,$this->folderNameToHoldImages);
 
+        //same the time when the files are converted
+        $this->conversion->converted_at = Carbon::now();
+        $this->conversion->status = "converted";
+        $this->conversion->save();
     }
 }
