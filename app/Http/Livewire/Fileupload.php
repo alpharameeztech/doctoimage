@@ -2,9 +2,11 @@
 
 namespace App\Http\Livewire;
 
+use App\Events\FilesHaveBeenZipped;
 use App\Jobs\DockToPdfConverter;
 use App\Jobs\PdfToImageConverter;
 use App\Jobs\ZipFiles;
+use App\Listeners\SetDownloadFileLink;
 use App\Models\Conversion;
 use App\Models\StorageFolder;
 use App\Repositories\Interfaces\DocToPdfInterface;
@@ -16,10 +18,14 @@ use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Illuminate\Bus\Batch;
+use Throwable;
 
 class Fileupload extends Component
 {
     use WithFileUploads;
+
+//    protected $listeners = ['FilesHaveBeenZipped' => 'incrementPostCount'];
 
     public $files = [];
 
@@ -104,12 +110,14 @@ class Fileupload extends Component
 
             //chains the jobs in order
             //to convert doc,docx to images
-            Bus::chain([
+            Bus::batch([
                 new  DockToPdfConverter($this->folderName),
                 new PdfToImageConverter($this->conversion, $sourceOfPdfs),
                 new ZipFiles($this->conversion,$this->zipName, $zipSource, $destination)
-            ])->dispatch();
-
+            ])->then(function (Batch $batch) {
+                \Log::info('finished job: ' . Carbon::now());
+            })->dispatch();
+            \Log::info('second');
            // $this->convertFilesToPdf($docToPdf, $pdfToImage, $this->folderName, $zip);
 
             session()->flash('success', 'Converted Successfully!');

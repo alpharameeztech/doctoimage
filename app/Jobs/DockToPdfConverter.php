@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Illuminate\Bus\Batchable;
 use App\Repositories\Interfaces\DocToPdfInterface;
 use App\Services\Helper;
 use Illuminate\Bus\Queueable;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Storage;
 
 class DockToPdfConverter implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $source;
     protected $folderNameHoldingPdfFiles;

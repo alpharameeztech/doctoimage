@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use Illuminate\Bus\Batchable;
+use App\Events\FilesHaveBeenZipped;
 use App\Repositories\Interfaces\ZipFilesInterface;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
@@ -13,7 +15,7 @@ use Illuminate\Queue\SerializesModels;
 
 class ZipFiles implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable,Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $conversion, $filename, $source, $destination;
 
@@ -42,5 +44,8 @@ class ZipFiles implements ShouldQueue
         //set the time when the zipping is done
         $this->conversion->zipped_at = Carbon::now();
         $this->conversion->save();
+
+        //FilesHaveBeenZipped::dispatch($this->filename);
+
     }
 }
