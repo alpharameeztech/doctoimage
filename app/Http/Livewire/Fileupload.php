@@ -114,7 +114,15 @@ class Fileupload extends Component
 
             session()->flash('success', 'Converted Successfully!');
 
+
+            //these are files that just uploaded
+            //for the conversion
+            //once they are converted and zipped
+            //these files should be removed
+           // $this->removeUploadedFiles();
+
             $this->resetData();
+
         }else{
             \Log::info('validation failed');
         }
@@ -128,62 +136,6 @@ class Fileupload extends Component
     public function render()
     {
         return view('livewire.fileupload');
-    }
-
-    public function convertFilesToPdf($docToPdf,$pdfToImage,$uploadedPath,$zip){
-//        $path = $uploadedPath . "/*";
-//
-//        $file =  Storage::path("$path");
-//        $output = Storage::path("$uploadedPath/$this->folderNameHoldingPdfFiles");
-//
-//        //interface method
-//        $docToPdf->convertFiles($file, $output);
-//
-//        $this->convertFilesToImage($pdfToImage,$uploadedPath, $zip);
-
-       // return $result;
-    }
-
-    protected function convertFilesToImage($pdfToImage,$uploadedPath, $zip){
-        $path = $uploadedPath ;
-
-        $file =  Storage::path("$path");
-        $output = Storage::path("$uploadedPath") . "/$this->folderNameHoldingPdfFiles";
-
-        //interface method
-        $result = $pdfToImage->convertFiles($output,$this->folderNameToHoldImages);
-
-        //same the time when the files are converted
-        $this->conversion->converted_at = Carbon::now();
-        $this->conversion->status = "converted";
-        $this->conversion->save();
-
-        //zip files
-        $this->zipFiles($uploadedPath, $zip);
-
-        return $result;
-    }
-
-    protected function zipFiles($folderName, $zip){
-
-        $path = Storage::path($folderName) . "/$this->folderNameHoldingPdfFiles/$this->folderNameToHoldImages";
-
-        $destination = storage_path();
-
-        $zip->execute($this->zipName, $path, $destination);
-
-        $publicPath = public_path();
-
-        //save the time when the zipping is done
-        $this->conversion->zipped_at = Carbon::now();
-        $this->conversion->save();
-
-
-        //these are files that just uploaded
-        //for the conversion
-        //once they are converted and zipped
-        //these files should be removed
-        //$this->removeUploadedFiles();
     }
 
     public function download()
