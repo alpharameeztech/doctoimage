@@ -145,7 +145,7 @@ class Fileupload extends Component
         $this->conversion->downloaded_at = Carbon::now();
         $this->conversion->save();
 
-        return response()->download($path);
+        return response()->download($path)->deleteFileAfterSend(true);
 
     }
 
