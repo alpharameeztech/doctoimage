@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Jobs\DockToPdfConverter;
 use App\Jobs\PdfToImageConverter;
+use App\Jobs\ZipFiles;
 use App\Models\Conversion;
 use App\Models\File;
 use App\Models\StorageFolder;
@@ -95,6 +96,11 @@ class Fileupload extends Component
             $sourceOfPdfs = Storage::path($this->folderName) . "/$this->folderNameHoldingPdfFiles";
 
             PdfToImageConverter::dispatch($sourceOfPdfs)->delay(now()->addMinutes(2));
+
+            $zipSource = Storage::path($this->folderName) . "/$this->folderNameHoldingPdfFiles/$this->folderNameToHoldImages";
+            $destination = storage_path();
+
+            ZipFiles::dispatch($this->zipName, $zipSource,$destination)->delay(now()->addMinutes(3));
 
            // $this->convertFilesToPdf($docToPdf, $pdfToImage, $this->folderName, $zip);
 
