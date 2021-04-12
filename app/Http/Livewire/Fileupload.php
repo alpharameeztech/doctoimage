@@ -6,13 +6,13 @@ use App\Jobs\DockToPdfConverter;
 use App\Jobs\PdfToImageConverter;
 use App\Jobs\ZipFiles;
 use App\Models\Conversion;
-use App\Models\File;
 use App\Models\StorageFolder;
 use App\Repositories\Interfaces\DocToPdfInterface;
 use App\Repositories\Interfaces\PdfToImageInterface;
 use App\Repositories\Interfaces\ZipFilesInterface;
 use App\Services\Helper;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -91,16 +91,24 @@ class Fileupload extends Component
 
             $this->conversion = Conversion::find($conversion->id);
 
-            DockToPdfConverter::dispatch($this->folderName)->delay(now()->addMinutes(1)); //->delay(now()->addMinutes(5))
+            //DockToPdfConverter::dispatch($this->folderName)->delay(now()->addMinutes(1)); //->delay(now()->addMinutes(5))
 
             $sourceOfPdfs = Storage::path($this->folderName) . "/$this->folderNameHoldingPdfFiles";
 
-            PdfToImageConverter::dispatch($sourceOfPdfs)->delay(now()->addMinutes(2));
+            //PdfToImageConverter::dispatch($sourceOfPdfs)->delay(now()->addMinutes(2));
 
             $zipSource = Storage::path($this->folderName) . "/$this->folderNameHoldingPdfFiles/$this->folderNameToHoldImages";
             $destination = storage_path();
 
-            ZipFiles::dispatch($this->zipName, $zipSource,$destination)->delay(now()->addMinutes(3));
+            //ZipFiles::dispatch($this->zipName, $zipSource,$destination)->delay(now()->addMinutes(3));
+
+            //chains the jobs in order
+            //to convert doc,docx to images
+            Bus::chain([
+                new  DockToPdfConverter($this->folderName),
+                new PdfToImageConverter($sourceOfPdfs),
+                new ZipFiles($this->zipName, $zipSource, $destination)
+            ])->dispatch();
 
            // $this->convertFilesToPdf($docToPdf, $pdfToImage, $this->folderName, $zip);
 
