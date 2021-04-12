@@ -89,7 +89,7 @@ class Fileupload extends Component
 
             $this->conversion = Conversion::find($conversion->id);
 
-            DockToPdfConverter::dispatch($this->folderName)->delay(now()->addMinutes(1)); //->delay(now()->addMinutes(5))
+            DockToPdfConverter::dispatch($this->folderName); //->delay(now()->addMinutes(5))
 
            // $this->convertFilesToPdf($docToPdf, $pdfToImage, $this->folderName, $zip);
 

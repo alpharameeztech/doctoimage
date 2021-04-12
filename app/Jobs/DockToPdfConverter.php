@@ -16,7 +16,6 @@ class DockToPdfConverter implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $dockToPdf;
     protected $source;
     protected $folderNameHoldingPdfFiles;
 
@@ -39,7 +38,6 @@ class DockToPdfConverter implements ShouldQueue
      */
     public function handle(DocToPdfInterface $docToPdf)
     {
-        $this->dockToPdf = $docToPdf;
 
         $path = $this->source . "/*";
 
