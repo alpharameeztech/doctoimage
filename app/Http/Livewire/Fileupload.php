@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Jobs\DockToPdfConverter;
 use App\Models\Conversion;
 use App\Models\File;
 use App\Models\StorageFolder;
@@ -88,7 +89,9 @@ class Fileupload extends Component
 
             $this->conversion = Conversion::find($conversion->id);
 
-            $this->convertFilesToPdf($docToPdf, $pdfToImage, $this->folderName, $zip);
+            DockToPdfConverter::dispatch($this->folderName)->delay(now()->addMinutes(1)); //->delay(now()->addMinutes(5))
+
+           // $this->convertFilesToPdf($docToPdf, $pdfToImage, $this->folderName, $zip);
 
             session()->flash('success', 'Converted Successfully!');
 
@@ -109,15 +112,15 @@ class Fileupload extends Component
     }
 
     public function convertFilesToPdf($docToPdf,$pdfToImage,$uploadedPath,$zip){
-        $path = $uploadedPath . "/*";
-
-        $file =  Storage::path("$path");
-        $output = Storage::path("$uploadedPath/$this->folderNameHoldingPdfFiles");
-
-        //interface method
-        $docToPdf->convertFiles($file, $output);
-
-        $this->convertFilesToImage($pdfToImage,$uploadedPath, $zip);
+//        $path = $uploadedPath . "/*";
+//
+//        $file =  Storage::path("$path");
+//        $output = Storage::path("$uploadedPath/$this->folderNameHoldingPdfFiles");
+//
+//        //interface method
+//        $docToPdf->convertFiles($file, $output);
+//
+//        $this->convertFilesToImage($pdfToImage,$uploadedPath, $zip);
 
        // return $result;
     }
