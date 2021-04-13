@@ -35,9 +35,9 @@
                 <input  class="hidden" type="file" wire:model="files" multiple>
             </label>
 
-            <div class="m-6 space-y-3 w-72">
+            <div wire:poll class="m-6 space-y-3 w-72">
                 <button
-                    wire:loading.remove
+{{--                    wire:loading.remove--}}
                     type="submit"
                     class="block w-full px-6 py-2 text-xs font-medium
                      leading-6 text-center text-white uppercase transition
@@ -49,14 +49,16 @@
 
                 @error('files.*') <span class="text-white error">{{ $message }}</span> @enderror
 
-                <div wire:loading>
+                @if($conversion && $conversion->status == 'in_progress')
+                <div>
                     <p class="text-white">
                         Processing...
                     </p>
 
                 </div>
+                @endif
 
-                <div wire:poll>
+                <div >
                     @if($conversion && $conversion->status == 'converted')
                         <button  type="button" class="block w-full px-6 py-2
                 text-xs font-medium leading-6 text-center
