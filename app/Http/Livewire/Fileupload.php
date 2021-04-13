@@ -55,7 +55,7 @@ class Fileupload extends Component
         $this->maxFilesAllowed = config('app.max_files_allowed');
     }
 
-    public function save(DocToPdfInterface $docToPdf,  PdfToImageInterface $pdfToImage, ZipFilesInterface $zip)
+    public function save( DocToPdfInterface $docToPdf,  PdfToImageInterface $pdfToImage, ZipFilesInterface $zip)
     {
         $this->validate([
             'files.*' => "file",
@@ -117,7 +117,6 @@ class Fileupload extends Component
             ])->then(function (Batch $batch) {
                 \Log::info('finished job: ' . Carbon::now());
             })->dispatch();
-            \Log::info('second');
            // $this->convertFilesToPdf($docToPdf, $pdfToImage, $this->folderName, $zip);
 
             session()->flash('success', 'Converted Successfully!');

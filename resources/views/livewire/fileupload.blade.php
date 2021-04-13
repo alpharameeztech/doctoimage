@@ -56,14 +56,18 @@
 
                 </div>
 
-                <button type="button" class="block w-full px-6 py-2
+                <div wire:poll>
+                    @if($conversion && $conversion->status == 'converted')
+                        <button  type="button" class="block w-full px-6 py-2
                 text-xs font-medium leading-6 text-center
                  text-white uppercase transition bg-blue-700
                   rounded shadow ripple hover:shadow-lg hover:bg-blue-800
                    focus:outline-none waves-effect" wire:click="download"
-                >
-                    Download File
-                </button>
+                        >
+                            Download File
+                        </button>
+                    @endif
+                </div>
 
             </div>
     </form>

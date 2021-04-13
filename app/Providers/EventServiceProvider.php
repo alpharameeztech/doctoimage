@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use App\Events\FilesHaveBeenZipped;
-use App\Listeners\SetDownloadFileLink;
+use App\Listeners\SetDownloadableFileLink;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -19,6 +19,10 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+
+        FilesHaveBeenZipped::class => [
+            SetDownloadableFileLink::class
         ],
     ];
 
