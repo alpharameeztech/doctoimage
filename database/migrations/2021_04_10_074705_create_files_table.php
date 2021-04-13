@@ -17,7 +17,6 @@ class CreateFilesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('storage_folder_id');
             $table->longText('name');
-            $table->string('convert_status')->default('in_progress');
             $table->timestamps();
 
             $table->foreign('storage_folder_id')
