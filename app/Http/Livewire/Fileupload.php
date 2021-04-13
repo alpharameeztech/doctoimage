@@ -46,6 +46,7 @@ class Fileupload extends Component
 
     public $storageFolder;
     public $conversion;
+    public $message = 'Converted Successfully!';
 
     protected $docToPdf;
 

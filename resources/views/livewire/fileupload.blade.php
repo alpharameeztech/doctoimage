@@ -9,7 +9,7 @@
 {{--        </label>--}}
 {{--    </div>--}}
 
-    @if (session()->has('success'))
+    @if($conversion && $conversion->status == 'converted')
         <div class="bg-gray-900 pb-10">
 
             <div class="max-w-6xl mx-auto container mx-auto">
@@ -19,7 +19,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <p class="ml-3">{{ session('success') }}</p>
+                    <p class="ml-3">{{ $message }}</p>
                 </div>
             </div>
         </div>
