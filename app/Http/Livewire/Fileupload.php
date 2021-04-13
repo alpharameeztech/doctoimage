@@ -153,7 +153,10 @@ class Fileupload extends Component
         $this->conversion->downloaded_at = Carbon::now();
         $this->conversion->save();
 
-        return response()->download($path)->deleteFileAfterSend(true);
+        //download the zipped file if exist
+        if(file_exists($path)){
+            return response()->download($path)->deleteFileAfterSend(true);
+        }
 
     }
 
