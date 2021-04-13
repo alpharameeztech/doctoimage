@@ -11,6 +11,8 @@ class StorageFolder extends Model
 
     protected $fillable = ['id'];
 
+    protected $with = ['files', 'conversion'];
+
     public function files()
     {
        return $this->hasMany(File::class);
