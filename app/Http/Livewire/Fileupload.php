@@ -133,6 +133,7 @@ class Fileupload extends Component
 
         }else{
             \Log::info('validation failed');
+            session()->flash('validationFailed', "Maximum file upload limit is less than: $this->maxFilesAllowed");
         }
     }
 

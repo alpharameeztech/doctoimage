@@ -25,6 +25,21 @@
         </div>
     @endif
 
+    @if(session()->has('validationFailed'))
+        <div class="bg-gray-900 pb-10">
+            <div class="max-w-6xl mx-auto container mx-auto">
+                <div class="flex items-center bg-red-500 text-white text-sm font-bold px-4 py-3" role="alert">
+                    <svg class="w-6 sm:w-5 h-6 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <p class="ml-3">{{ session('validationFailed') }}</p>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <form wire:submit.prevent="save">
         <div class="flex w-full items-center justify-center bg-gray-900 pb-15">
             <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-blue">
