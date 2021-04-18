@@ -111,13 +111,11 @@ class Fileupload extends Component
 
             //chains the jobs in order
             //to convert doc,docx to images
-            Bus::batch([
+            Bus::chain([
                 new  DockToPdfConverter($this->folderName),
                 new PdfToImageConverter($this->conversion, $sourceOfPdfs),
                 new ZipFiles($this->conversion,$this->zipName, $zipSource, $destination)
-            ])->then(function (Batch $batch) {
-                \Log::info('finished job: ' . Carbon::now());
-            })->dispatch();
+            ])->dispatch();
            // $this->convertFilesToPdf($docToPdf, $pdfToImage, $this->folderName, $zip);
 
             session()->flash('success', 'Converted Successfully!');

@@ -49,5 +49,8 @@ class DockToPdfConverter implements ShouldQueue
         $docToPdf->convertFiles($files, $output);
 
         //$this->convertFilesToImage($pdfToImage,$uploadedPath, $zip);
+
+        \Log::info(get_class($this) . ": $this->source");
+
     }
 }

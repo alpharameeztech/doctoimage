@@ -45,6 +45,7 @@ class ZipFiles implements ShouldQueue
         $this->conversion->zipped_at = Carbon::now();
         $this->conversion->save();
 
+        \Log::info(get_class($this) . ":  $this->filename");
         //FilesHaveBeenZipped::dispatch($this->filename);
 
     }
