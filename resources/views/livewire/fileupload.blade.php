@@ -41,7 +41,13 @@
     @endif
 
     <form wire:submit.prevent="save">
-        <div class="flex w-full items-center justify-center bg-gray-900 pb-15">
+        <div
+            x-data="{ isUploading: false, progress: 0 , uploaded: false}"
+            x-on:livewire-upload-start="isUploading = true"
+            x-on:livewire-upload-finish="uploaded = true"
+            x-on:livewire-upload-error="isUploading = false"
+            x-on:livewire-upload-progress="progress = $event.detail.progress"
+            class="flex w-full items-center justify-center bg-gray-900 pb-15">
             <label class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-blue">
                 <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
@@ -52,6 +58,7 @@
 
             <div wire:poll class="m-6 space-y-3 w-72">
                 <button
+                    x-show="uploaded"
 {{--                    wire:loading.remove--}}
                     type="submit"
                     class="block w-full px-6 py-2 text-xs font-medium
