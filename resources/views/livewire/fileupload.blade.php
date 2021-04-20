@@ -40,11 +40,18 @@
         </div>
     @endif
 
+{{--    =================== mockup file upload progress bar ========================--}}
+{{--    <div class="bg-gray-900 relative pt-1">--}}
+{{--        <div class="bg-gray-900 overflow-hidden h-2  flex rounded bg-pink-200">--}}
+{{--            <div style="width:30%" class="shadow-none flex flex-col text-center   justify-center bg-pink-500"></div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+
     <form wire:submit.prevent="save">
         <div
             x-data="{ isUploading: false, progress: 0 , uploaded: false}"
             x-on:livewire-upload-start="isUploading = true"
-            x-on:livewire-upload-finish="uploaded = true"
+            x-on:livewire-upload-finish="uploaded = true; isUploading = false"
             x-on:livewire-upload-error="isUploading = false"
             x-on:livewire-upload-progress="progress = $event.detail.progress"
             class="flex w-full items-center justify-center bg-gray-900 pb-15">
@@ -79,6 +86,12 @@
 
                 </div>
                 @endif
+
+                <div x-show="isUploading">
+                    <p class="text-white">
+                        Uploading...
+                    </p>
+                </div>
 
                 <div >
                     @if($conversion && $conversion->status == 'converted')
