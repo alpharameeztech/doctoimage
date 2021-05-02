@@ -2,7 +2,7 @@
 
 ## About
 
-The File Converter is a software that converts the word document into images. 
+Laravel based file converted. DOC, DOCX to JPG.
 
 ## Technology Stack
 - [Laravel](https://laravel.com/).
