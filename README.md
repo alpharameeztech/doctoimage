@@ -9,6 +9,8 @@ Laravel based file converted. DOC, DOCX to JPG.
 - [Laravel](https://laravel.com/).
 - [Livewire](https://laravel-livewire.com/).
 - Laravel Queues.
+- LibreOfficeDocToPdf(Linux software)
+- Pdftoppm (Linux software)
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
@@ -46,7 +48,7 @@ more conversion types.
 
 - Queue workers are running
 - Queue workers checks the database and grabs the paths of the files that are not converted and not in progress
-- Tries to convert the file using Linux tools (jodconverter + pdftoppm).
+- Tries to convert the file using Linux tools (LibreOfficeDocToPdf + pdftoppm).
 - When PDF is converted to JPG each page is saved to a stand-alone JPG file. So in many cases we’ll have many JPG files after the conversion is done. Those files gets zipped
 - Records “converted_at” in the database and fills “converted”
 
