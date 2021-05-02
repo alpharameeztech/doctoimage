@@ -1,4 +1,4 @@
-##<p align="center">File Converter</p>
+##File Converter
 
 ## About
 
@@ -46,5 +46,4 @@ more conversion types.
 - Tries to convert the file using Linux tools (jodconverter + pdftoppm).
 - When PDF is converted to JPG each page is saved to a stand-alone JPG file. So in many cases we’ll have many JPG files after the conversion is done. Those files gets zipped
 - Records “converted_at” in the database and fills “converted”
--
 
